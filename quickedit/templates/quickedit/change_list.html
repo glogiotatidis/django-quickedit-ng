@@ -1,79 +1,84 @@
 {% extends "admin/change_list.html" %}
-{% load quickedit admin_list adminmedia %}
-{% block extrastyle %}{{ block.super }}
-<style type="text/css" media="screen">
-	#changelist.filtered table.qe-table {
-		width: 100%;
-		color: red;
-		border: 0 !important;
-		float: left;
-		clear: left;
-		margin-right: 0 !important;
-	}
-	table.qe-table tr{
-		width: 100%;
-		float: left;
-	}
-	#changelist.filtered table.qe-table tr td{
-		border: 0;
-	}
-        .helptext{
-            font-size: 10px !important;
-            color: #999;
-        }
-	.qe-table label {
-		width: 100px;
-		display: block;
-		float: left;
-	}
-        .qe-table td {
-            text-align: left;
-        }
-        .qe-table tr {
-            border-bottom: none;
-        }        
-	table.qe-table td.qe-long input[type="text"] {
-		width: 500px;
-	}
-	table.qe-table td.qe-long  textarea {
-		width: 500px;
-	}
-	.qe-button {
-	}
-	div.qe-buttons {
-		display: block; 
-	}
-        
-        .button, input[type=reset]{
-            background: white url({% admin_media_prefix %}img/admin/nav-bg.gif) bottom repeat-x;
-            padding: 3px 5px;
-            color: black;
-            border: 1px solid #bbb;
-            border-color: #ddd #aaa #aaa #ddd;
-        }
-</style>
+{% load quickedit admin_list static %}
+{% block extrastyle %}
+  {{ block.super }}
+  <style type="text/css" media="screen">
+   #changelist.filtered table.qe-table {
+  		 width: 100%;
+  		 color: red;
+  		 border: 0 !important;
+  		 float: left;
+  		 clear: left;
+  		 margin-right: 0 !important;
+   }
+   table.qe-table tr{
+  		 width: 100%;
+  		 float: left;
+   }
+   #changelist.filtered table.qe-table tr td{
+  		 border: 0;
+   }
+   .helptext{
+       font-size: 10px !important;
+       color: #999;
+   }
+   .qe-table label {
+  		 width: 100px;
+  		 display: block;
+  		 float: left;
+   }
+   .qe-table td {
+       text-align: left;
+   }
+   .qe-table tr {
+       border-bottom: none;
+   }
+   table.qe-table td.qe-long input[type="text"] {
+  		 width: 500px;
+   }
+   table.qe-table td.qe-long  textarea {
+  		 width: 500px;
+   }
+   .qe-button {
+   }
+   .quickedit {
+       cursor: pointer;
+   }
+
+   div.qe-buttons {
+  		 display: block;
+   }
+   .button, input[type=reset]{
+       background: #a41515;
+       padding: 10px 15px;
+       color: #fff;
+       border: none;
+       border-radius: 4px;
+   }
+  </style>
 {% endblock %}
 
-{% block extrahead %}{{ block.super }}
-<script type="text/javascript">
-(function($) {
-    $(document).ready(function($) {
-		$('.quickedit').each(function(){
-			$(this).click(function(){
-				var target = "#qe-form-" + $(this).attr('id').replace('quickedit-','');
-				$(target).show();
-				$('.qe-reset',target).click(function(){
-					$(target).hide();
-				})
-			})
-		});
-    });
-})(django.jQuery);
-</script>
+{% block extrahead %}
+  {{ block.super }}
+  <script type="text/javascript">
+   (function($) {
+       $(document).ready(function($) {
+  		     $('.quickedit').each(function(){
+  			       $(this).click(function(){
+  				         var target = "#qe-form-" + $(this).attr('id').replace('quickedit-','');
+  				         $(target).toggle();
+  				         $('.qe-reset',target).click(function(){
+  					           $(target).hide();
+  				         })
+  			       })
+  		     });
+       });
+   })(django.jQuery);
+  </script>
 {% endblock %}
 
 {% block result_list %}
-{% if action_form and actions_on_top and cl.full_result_count %}{% admin_actions %}{% endif %}
-{% qe_result_list cl %}
-{% if action_form and actions_on_bottom and cl.full_result_count %}{% admin_actions %}{% endif %}
+  {% if action_form and actions_on_top and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+  {% qe_result_list cl %}
+  {% if action_form and actions_on_bottom and cl.show_admin_actions %}{% admin_actions %}{% endif %}
 {% endblock %}

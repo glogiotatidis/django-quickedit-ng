@@ -1,34 +1,52 @@
-Quick Edit Documentation
+Quick Edit NG Documentation
 ==============================
 
 :Authors:
    Corey Oordt
    Justin Quick <justquick@gmail.com>,
-:Version: 0.1
+   Giorgos Logiotatidis <giorgos@sealabs.net>,
+:Version: 0.2
 
 
 ::
 
-    pip install django-quickedit==0.1.0
+    pip install django-quickedit-ng==0.2.0
 
-Django Quick Edit is a way to quickly edit fields in a model directly from the
-admin change_list view. It hijacks the functionality of ``list_editable`` fields
-but allows for data entry in a drop down form instead of inline. This concept
-was borrowed from Wordpress and adapted into the Django admin interface.
+Django Quick Edit NG is a way to quickly edit fields in a model directly from
+the admin change_list view. It adds to the functionality of ``list_editable``
+and allows for data entry in a drop down form in addition to inline. This
+concept was borrowed from Wordpress and adapted into the Django admin interface.
 Here is an example screenshot to show functionality
 
-.. image:: http://github.com/washingtontimes/django-quickedit/raw/master/screenshot.png
+.. image:: http://github.com/glogiotatidis/django-quickedit-ng/raw/master/screenshot.png
 
-Configuration
+
+About the fork
 --------------
 
-To enable fields to show up in the drop down form, specify the model and fields in your ``settings.py``::
+`Quick Edit <https://github.com/callowayproject/django-quickedit/>`_ was
+originally a project from Corey and Justin. According to the GitHub repo the
+project hasn't been updated for 8 years. After receiving no replies on the issue
+asking whether the initial authors are interested to update the project, Giorgos
+made the necessary changes to make this work with recent versions of Django and
+published this package as `django-quickedit-ng`.
 
-    QUICK_EDITABLE_FIELDS = {
-        # 'app_label.model_name': fields
-        'comments.comment': ('ip_address','user_name','comment','is_public','is_removed')
-    }
-    
-Also you must specify ``list_editable`` to turn on the form action so you can actually save data.
-If the ``ModelAdmin`` does not have it defined (like Django's ``CommentsAdmin``) then the first field
-in your listing will be added so it will be something like: ``CommentsAdmin.list_editable = ('ip_address',)``
+
+Installation and configuration
+------------------------------
+
+Include `quickedit` in the list of your installed apps. For each `ModelAdmin`
+you want to get quick edit, inherit `QuickEditAdmin` and add the set of fields
+you want to edit in a drop down in `quick_editable` variable.
+
+Example::
+
+  from django.contrib import admin
+  from quickedit.admin import QuickEditAdmin
+
+  class ArticleAdmin(QuickEditAdmin, admin.ModelAdmin):
+      list_display = ('id', 'name', 'published')
+      list_editable = ('published',)
+      quick_editable = ('name',)
+
+  admin.site.register(models.Article, ArticleAdmin)
