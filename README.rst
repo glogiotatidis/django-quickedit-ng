@@ -36,8 +36,9 @@ Installation and configuration
 ------------------------------
 
 Include `quickedit` in the list of your installed apps. For each `ModelAdmin`
-you want to get quick edit, inherit `QuickEditAdmin` and add the set of fields
-you want to edit in a drop down in `quick_editable` variable.
+you want to get quick edit, inherit `QuickEditAdmin`, set `change_list_template`
+quickedit's template and add the set of fields you want to edit in a drop down
+in `quick_editable` variable.
 
 Example::
 
@@ -48,5 +49,5 @@ Example::
       list_display = ('id', 'name', 'published')
       list_editable = ('published',)
       quick_editable = ('name',)
-
+      change_list_template = 'quickedit/change_list.html'
   admin.site.register(models.Article, ArticleAdmin)
